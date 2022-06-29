@@ -1,21 +1,29 @@
 # Use the latest 2.1 version of CircleCI pipeline process engine.
 version: 2.1
 
+orbs:
+
+
+
 # Define a job to be invoked later in a workflow.
 jobs:
-  say-hello:
+  create_infrastructure:
     # Specify the execution environment. You can specify an image from Dockerhub or use one of our Convenience Images from CircleCI's Developer Hub.
     docker:
-      - image: cimg/base:stable
+      - image: amazon/aws-cli
     # Add steps to the job
     steps:
       - checkout
       - run:
-          name: "Say hello"
-          command: "echo Hello, World!"
+          name: "Create Cloudformation Stack"
+          command: |
+            aws cloudformation deploy \
+            --template-file cf-template.yml \
+            --stack-name myStack-${CIRCLE_WORKFLOW_ID:0:5} \
+            --region us-east-1
 
 # Invoke jobs via workflows
 workflows:
-  say-hello-workflow:
+  my_infrastructure:
     jobs:
-      - say-hello
+      - create_infrastructure
