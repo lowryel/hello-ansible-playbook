@@ -11,7 +11,7 @@ jobs:
     # Specify the execution environment. You can specify an image from Dockerhub or use one of our Convenience Images from CircleCI's Developer Hub.
     docker:
       - image: amazon/aws-cli
-    # Add steps to the job
+    # Add steps to the job. Steps to create a cloudformation stack
     steps:
       - checkout
       - run:
